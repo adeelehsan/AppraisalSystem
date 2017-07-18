@@ -15,9 +15,15 @@ class Employee(models.Model):
     user = models.OneToOneField(User, unique=True)
     address = models.CharField(max_length=200)
     employee_type = models.CharField(max_length=200)
+    report_to = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.user.username
+
+
+class Competencies(models.Model):
+    skills = models.CharField(max_length=200)
+    communication = models.CharField(max_length=200)
 
 
 class Appraisal(models.Model):
@@ -26,13 +32,8 @@ class Appraisal(models.Model):
     """
     year = models.IntegerField()
     employee_score = models.IntegerField()
-    manager_comment = models.CharField()
+    manager_comment = models.CharField(max_length=300)
     competencies = models.ForeignKey(Competencies, on_delete=models.CASCADE)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-
-
-class Competencies(models.Model):
-    skills = models.CharField(max_length=200)
-    communication = models.CharField(max_length=200)
 
 
