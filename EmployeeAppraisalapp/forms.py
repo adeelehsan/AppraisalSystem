@@ -6,13 +6,18 @@ from django.contrib import admin
 class EmployeeForm(forms.ModelForm):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+    # report_to = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super(EmployeeForm, self).__init__(*args, **kwargs)
+        self.fields['report_to'].required = False
 
     class Meta:
         model = Employee
         fields = ['username', 'password', 'address', 'employee_type', 'report_to']
 
     def clean(self):
-        if not self.cleaned_data.get('user'):
+        if not self.cleaned_data.get('username'):
             raise forms.ValidationError(
                 "Please Fill all the fields")
 

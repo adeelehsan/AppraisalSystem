@@ -7,7 +7,6 @@ from django.db import models
 
 # Create your models here.
 
-
 class Employee(models.Model):
     """
         An Employee class - to describe Employee in the system.
@@ -15,7 +14,7 @@ class Employee(models.Model):
     user = models.OneToOneField(User, unique=True)
     address = models.CharField(max_length=200)
     employee_type = models.CharField(max_length=200)
-    report_to = models.CharField(max_length=200, null=True)
+    report_to = models.ForeignKey('Employee', null=True)
 
     def __str__(self):
         return self.user.username
