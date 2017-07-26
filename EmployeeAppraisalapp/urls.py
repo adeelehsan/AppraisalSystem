@@ -3,7 +3,7 @@ from . import views
 
 app_name = 'EmployeeAppraisalapp'
 urlpatterns = [
-    # url(r'^$', views.index, name='index'),
+    url(r'^$', views.index, name='index'),
     # url(r'summary', views.summary, name='summary'),
     url(r'create', views.create_employee, name='create_employee'),
     url(r'feedback', views.create_appraisal, name='create_appraisal'),

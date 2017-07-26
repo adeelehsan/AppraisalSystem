@@ -24,15 +24,15 @@ class EmployeeForm(forms.ModelForm):
 
 class AppraisalForm(forms.ModelForm):
     skills = forms.CharField()
-    communications = forms.CharField(widget=forms.PasswordInput)
+    communications = forms.CharField()
 
     class Meta:
         model = Appraisal
         fields = '__all__'
-        exclude = ['employee', 'competencies']
+        exclude = ['competencies']
 
     def clean(self):
-        if not self.cleaned_data.get('user'):
+        if not self.cleaned_data.get('year'):
             raise forms.ValidationError(
                 "Please Fill all the fields")
 

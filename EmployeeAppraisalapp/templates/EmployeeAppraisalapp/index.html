@@ -5,22 +5,36 @@
     <title>Index</title>
 </head>
 <body>
-{% if todo_list %}
-<ul>
-    {% for todo in todo_list%}
-    <li><a href="{{todo.id}}/detail">
-        <h3>{{todo.title}}</h3>
-    </a>
+{% if msg == "manager" %}
+    {% if employee_list %}
+        <ul>
+            {% for employee in empolyee_list%}
+                <li>
+                    <a href="{% url 'EmployeeAppraisalapp:feedback' %}">
+                    <h3>{{employee.user}}</h3></a>
 
-    </li>
-    {% endfor %}
-</ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {%else%}
+        <p>No Employee is Assigned to You</p>
+    {%endif%}
 {%else%}
-<p>To do List is Empty</p>
+    {% if feedback %}
+    <ul>
+            {% for feed in feedback%}
+                <li>
+                    <h3>{{feed.year}}</h3><br>
+                    <h3>{{feed.employee_score}}</h3><br>
+                    <h3>{{feed.manager_comment}}</h3><br>
+                </li>
+
+            {% endfor %}
+        </ul>
+    {%else%}
+    <p>No feedback is given yet</p>
+    {%endif%}
 {%endif%}
-<button><a href="{% url 'todo:create' %}"> Add Task to List </a></button>
-<br><br><br>
-<button><a href="{% url 'todo:summary' %}"> View Summary </a></button>
 <br><br><br>
  <button><a href="{% url 'logout' %}">Logout</a></button>
 </body>
