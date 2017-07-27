@@ -16,8 +16,8 @@ from .models import Employee, Competencies, Appraisal
 def index(request):
     employee = Employee.objects.get(user=request.user)
     if employee.employee_type == 'CEO' or employee.employee_type == 'Manager':
-        empolyee_list = Employee.objects.filter(report_to=employee)
-        context = {'empolyee_list': empolyee_list, 'msg': 'manager'}
+        employee_list = employee.get_all_children(include_self=False)
+        context = {'employee_list': employee_list, 'msg': 'manager'}
     else:
         feedback = Appraisal.objects.filter(employee=employee)
         context = {'feedback': feedback, 'msg': 'employee'}
@@ -42,7 +42,8 @@ def create_employee(request):
 
 
 @login_required
-def create_appraisal(request):
+def create_appraisal(request, employee_id):
+    employee = Employee.objects.get(pk=employee_id)
     if request.POST:
         form = AppraisalForm(request.POST)
         if form.is_valid():
@@ -50,18 +51,25 @@ def create_appraisal(request):
                                                        communication=request.POST['communications'])
             appraisal = form.save(commit=False)
             appraisal.competencies = competencies
+            appraisal.employee = employee
             form.save()
-            employee = Employee.objects.get(user=request.user)
             repot_to = employee.report_to
-            send_mail(
-                'Subject here',
-                'Here is the message.',
-                'adeel.ehsan@outlook.com',
-                ['adeel.ehsan@arbisoft.com'],
-                fail_silently=False,
-            )
+            # send_mail(
+            #     'Subject here',
+            #     'Here is the message.',
+            #     'adeel.ehsan@outlook.com',
+            #     ['adeel.ehsan@arbisoft.com'],
+            #     fail_silently=False,
+            # )
             return HttpResponseRedirect(reverse('EmployeeAppraisalapp:index'))
         else:
             return render(request, 'EmployeeAppraisalapp/feedback.html', {'form': form})
     else:
         return render(request, 'EmployeeAppraisalapp/feedback.html', {'form': AppraisalForm()})
+
+
+def detail(request, employee_id):
+    employee = Employee.objects.filter(pk=employee_id)
+    feedback = Appraisal.objects.filter(employee=employee)
+    context = {'feedback': feedback}
+    return render(request, 'EmployeeAppraisalapp/detail.html', context)

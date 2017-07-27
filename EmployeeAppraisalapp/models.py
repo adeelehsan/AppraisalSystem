@@ -16,6 +16,22 @@ class Employee(models.Model):
     employee_type = models.CharField(max_length=200)
     report_to = models.ForeignKey('Employee', null=True)
 
+    # def children(self, include_self=True):
+    #     employee = []
+    #     for employee in Employee.objects.filter(report_to=self.pk):
+    #         _employee = employee.children(include_self=True)
+    #         employee.append(_employee)
+    #     return employee
+    def get_all_children(self, include_self=True):
+        r = []
+        if include_self:
+            r.append(self)
+        for c in Employee.objects.filter(report_to=self):
+            _r = c.get_all_children(include_self=True)
+            if len(_r) > 0:
+                r.extend(_r)
+        return r
+
     def __str__(self):
         return self.user.username
 

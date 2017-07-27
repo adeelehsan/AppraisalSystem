@@ -29,7 +29,7 @@ class AppraisalForm(forms.ModelForm):
     class Meta:
         model = Appraisal
         fields = '__all__'
-        exclude = ['competencies']
+        exclude = ['competencies', 'employee']
 
     def clean(self):
         if not self.cleaned_data.get('year'):

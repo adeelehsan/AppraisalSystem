@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Detail</title>
+    <meta charset="utf-8">
+    <title>Index</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-{% if taske %}
-
-    <h4>Title: {{taske.title}}</h4>
-    <h4>Description:  {{taske.description}}</h4>
-    {% if taske.status == 'complete' %}
-        <h4>Status: Complete</h4>
-    {% else %}
-        <h4>Status: In Progress</h4>
-    {% endif %}
-    <h4>Last Activity: {{taske.log}}</h4>
-    <h4>Creation Date: {{taske.creation_date}}</h4>
-    {% if taske.status == 'complete' %}
-        <h4>Completion Date: {{taske.completion_date}}</h4>
-    {% endif %}
-
-{%else%}
-    <h3>Nothing to see here</h3>
-{%endif%}
-
-<br>
-<button><a href="{% url 'todo:update' taske.id %}"> update </a></button>
-<br><br>
-<button><a href="{% url 'todo:delete' taske.id %}"> Delete Task </a></button>
+    {% if feedback %}
+    <table class="table table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Employee Score</th>
+                <th>Manager Comment</th>
+                <th>Skills</th>
+                <th>communication</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for feed in feedback%}
+                    <tr>
+                    <td>{{feed.year}}</td>
+                    <td>{{feed.employee_score}}</td>
+                    <td>{{feed.manager_comment}}</td>
+                    <td>{{feed.competencies.skills}}</td>
+                    <td>{{feed.competencies.communication}}</td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    {%else%}
+    <p>No feedback is given yet</p>
+    {%endif%}
+<br><br><br>
+ <button><a href="{% url 'logout' %}">Logout</a></button>
 </body>
 </html>
